@@ -1,0 +1,21 @@
+{
+  "name": "LOUIE Personal Communicator",
+  "short_name": "LOUIE",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1420",
+  "theme_color": "#101b29",
+  "description": "A futuristic personal communicator inspired by Greenhouse Academy.",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

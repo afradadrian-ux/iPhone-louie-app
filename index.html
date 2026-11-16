@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101b29">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LOUIE">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>LOUIE</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1420;--panel:#142638;--panel2:#1d3549;--line:#31516a;--blue:#8de0ff;--white:#f2f8fc;--muted:#a9c3d5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#244a63 0,#0b1420 55%);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+header{padding:calc(env(safe-area-inset-top) + 18px) 20px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #294458}
+.logo{font-size:27px;letter-spacing:5px;font-weight:800}.sub{font-size:9px;letter-spacing:2px;color:var(--blue);margin-top:3px}.status{font-size:10px;color:#9fe5c1;border:1px solid #38745d;border-radius:20px;padding:7px 10px}
+main{padding:18px 16px 105px;max-width:650px;margin:auto}.hero{border:1px solid var(--line);background:linear-gradient(135deg,#1b3a50,#122333);border-radius:22px;padding:20px;margin-bottom:18px;box-shadow:0 12px 35px #0004}
+.kicker{font-size:10px;letter-spacing:2px;color:var(--blue)}h1{font-size:25px;margin:8px 0 5px}p{color:var(--muted);line-height:1.45}.clock{font-size:36px;font-weight:300;letter-spacing:2px;margin-top:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.tile{background:linear-gradient(145deg,#1b3448,#122333);border:1px solid #29485e;border-radius:18px;padding:17px 14px;text-align:left;color:var(--white);min-height:105px}.tile:active,button:active{transform:scale(.98)}.emoji{font-size:25px;display:block;margin-bottom:12px}.tile strong{font-size:13px;letter-spacing:1px}.tile small{display:block;color:var(--muted);margin-top:5px}
+section.panel{background:#132638;border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+h2{font-size:19px;margin:0 0 14px}label{font-size:12px;color:var(--muted);display:block;margin:12px 0 6px}
+input,textarea,select{width:100%;border:1px solid #3a5c73;background:#0d1a27;color:white;border-radius:11px;padding:12px;font:inherit}textarea{min-height:100px;resize:vertical}
+button,.action{border:1px solid #4c7892;background:#244a63;color:white;border-radius:12px;padding:11px 14px;font:inherit;font-weight:650;cursor:pointer;margin-top:10px}
+button.primary{background:#8bdfff;color:#092032;border:0}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.item{padding:12px;border:1px solid #2d4a60;border-radius:12px;margin:8px 0;background:#102131}.item small{color:var(--muted)}.empty{color:var(--muted);font-size:13px;padding:8px 0}
+nav{position:fixed;bottom:0;left:0;right:0;padding:9px 8px calc(env(safe-area-inset-bottom) + 8px);display:flex;justify-content:space-around;background:#0c1825ed;backdrop-filter:blur(18px);border-top:1px solid #294458}
+nav button{background:transparent;border:0;color:#a9c3d5;margin:0;padding:7px 8px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px}nav button span{font-size:18px}nav button.active{color:var(--blue)}
+.hidden{display:none!important}.notice{font-size:11px;color:#9db7c9;margin-top:12px}.pill{display:inline-block;padding:5px 9px;border-radius:20px;background:#203f54;color:var(--blue);font-size:10px}
+</style>
+</head>
+<body>
+<header><div><div class="logo">LOUIE</div><div class="sub">PERSONAL COMMUNICATOR</div></div><div class="status">● SYSTEM READY</div></header>
+<main>
+<div id="home">
+ <div class="hero"><div class="kicker">WELCOME BACK</div><h1>LOUIE SYSTEM</h1><p>Your personal command centre.</p><div class="clock" id="clock">--:--</div><div class="notice">LOCAL DEMO • V1.0</div></div>
+ <div class="grid">
+  <button class="tile" data-page="messages"><span class="emoji">✉️</span><strong>MESSAGES</strong><small>Demo message board</small></button>
+  <button class="tile" data-page="camera"><span class="emoji">📷</span><strong>CAMERA</strong><small>Capture a photo</small></button>
+  <button class="tile" data-page="notes"><span class="emoji">📝</span><strong>NOTES</strong><small>Save your thoughts</small></button>
+  <button class="tile" data-page="calendar"><span class="emoji">▦</span><strong>CALENDAR</strong><small>Personal events</small></button>
+  <button class="tile" data-page="assistant"><span class="emoji">◉</span><strong>VOICE ASSISTANT</strong><small>Talk using your device</small></button>
+  <button class="tile" data-page="settings"><span class="emoji">⚙️</span><strong>SETTINGS</strong><small>About this LOUIE</small></button>
+ </div>
+</div>
+<div id="messages" class="page hidden"><section class="panel"><h2>✉️ Messages</h2><p>This is a private demo message board on this device. It does not send SMS or internet messages.</p><label>Message</label><textarea id="msgText" placeholder="Write a message..."></textarea><button class="primary" id="saveMsg">Save demo message</button><div id="msgList"></div></section></div>
+<div id="camera" class="page hidden"><section class="panel"><h2>📷 Camera</h2><p>Choose Take Photo to open your iPhone camera through its photo picker.</p><label>Take or choose a photo</label><input id="photoInput" type="file" accept="image/*" capture="environment"><div id="photoPreview"></div><p class="notice">Photos stay in this browser session unless you save them separately.</p></section></div>
+<div id="notes" class="page hidden"><section class="panel"><h2>📝 Notes</h2><label>New note</label><textarea id="noteText" placeholder="Type a note..."></textarea><button class="primary" id="saveNote">Save note</button><div id="noteList"></div></section></div>
+<div id="calendar" class="page hidden"><section class="panel"><h2>▦ Calendar</h2><label>Event</label><input id="eventTitle" placeholder="What is happening?"><label>Date</label><input id="eventDate" type="date"><button class="primary" id="saveEvent">Add event</button><div id="eventList"></div></section></div>
+<div id="assistant" class="page hidden"><section class="panel"><h2>◉ LOUIE Voice</h2><p>Use your iPhone's supported speech recognition and speech synthesis, if available in Safari.</p><button class="primary" id="listen">🎙 Start listening</button><div id="heard" class="item">Ready when you are.</div><label>Or type to LOUIE</label><input id="askText" placeholder="Say or type something..."><button id="askBtn">Ask LOUIE</button><div id="reply" class="item hidden"></div><p class="notice">This is a basic on-device browser demo, not a connected AI assistant.</p></section></div>
+<div id="settings" class="page hidden"><section class="panel"><h2>⚙️ Settings</h2><div class="item">Device name <strong style="float:right">LOUIE</strong></div><div class="item">Version <strong style="float:right">1.0</strong></div><div class="item">Design <strong style="float:right">Futuristic / Academy</strong></div><p>Install: in Safari, tap Share → Add to Home Screen. For offline installation, this site must first be hosted securely (HTTPS).</p><button id="clearData">Clear saved notes, events and demo messages</button><p class="notice">This prototype stores notes, events and demo messages in this browser on this device.</p></section></div>
+</main>
+<nav>
+<button class="active" data-page="home"><span>⌂</span>Home</button><button data-page="messages"><span>✉</span>Messages</button><button data-page="notes"><span>▤</span>Notes</button><button data-page="calendar"><span>▦</span>Calendar</button><button data-page="settings"><span>⚙</span>Settings</button>
+</nav>
+<script>
+const pages=[...document.querySelectorAll('[data-page]')];
+function go(p){document.getElementById('home').classList.toggle('hidden',p!=='home');document.querySelectorAll('.page').forEach(x=>x.classList.toggle('hidden',x.id!==p));pages.forEach(b=>b.classList.toggle('active',b.dataset.page===p));window.scrollTo(0,0)}
+pages.forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}tick();setInterval(tick,1000);
+const get=k=>JSON.parse(localStorage.getItem('louie_'+k)||'[]'),put=(k,v)=>localStorage.setItem('louie_'+k,JSON.stringify(v));
+function render(k,id,empty){const a=get(k);document.getElementById(id).innerHTML=a.length?a.map((x,i)=>`<div class="item">${x.text.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}<br><small>${x.date||''}</small> <button data-del="${k}" data-i="${i}">Delete</button></div>`).join(''):`<div class="empty">${empty}</div>`}
+['notes','events','messages'].forEach(k=>render(k,{notes:'noteList',events:'eventList',messages:'msgList'}[k],'Nothing here yet.'));
+document.addEventListener('click',e=>{if(e.target.dataset.del){let a=get(e.target.dataset.del);a.splice(+e.target.dataset.i,1);put(e.target.dataset.del,a);render(e.target.dataset.del,{notes:'noteList',events:'eventList',messages:'msgList'}[e.target.dataset.del],'Nothing here yet.')}});
+function save(k,input,id){const el=document.getElementById(input),v=el.value.trim();if(!v)return;let a=get(k);a.unshift({text:v,date:new Date().toLocaleString()});put(k,a);el.value='';render(k,id,'Nothing here yet.')}
+document.getElementById('saveNote').onclick=()=>save('notes','noteText','noteList');
+document.getElementById('saveMsg').onclick=()=>save('messages','msgText','msgList');
+document.getElementById('saveEvent').onclick=()=>{const t=document.getElementById('eventTitle'),d=document.getElementById('eventDate');if(!t.value.trim()||!d.value)return;let a=get('events');a.unshift({text:t.value.trim(),date:d.value});put('events',a);t.value='';d.value='';render('events','eventList','No events yet.')};
+document.getElementById('photoInput').onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);document.getElementById('photoPreview').innerHTML='<img alt="Selected photo" style="max-width:100%;border-radius:12px;margin-top:12px" src="'+u+'">';};
+function respond(q){let s=q.toLowerCase(),r='I am your LOUIE demo assistant. I can help you explore the app. Full AI connection can be added later.';if(s.includes('time'))r='The time is '+new Date().toLocaleTimeString()+'.';else if(s.includes('date'))r='Today is '+new Date().toLocaleDateString()+'.';else if(s.includes('hello')||s.includes('hi'))r='Hello! LOUIE systems are ready.';else if(s.includes('note'))r='Open Notes to write and save a note on this device.';const el=document.getElementById('reply');el.textContent=r;el.classList.remove('hidden');if('speechSynthesis'in window)speechSynthesis.speak(new SpeechSynthesisUtterance(r))}
+document.getElementById('askBtn').onclick=()=>{let q=document.getElementById('askText').value.trim();if(q)respond(q)};
+document.getElementById('listen').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById('heard').textContent='Speech recognition is not supported in this browser. You can type instead.';return}const rec=new SR();rec.lang='en-AU';rec.onresult=e=>{const q=e.results[0][0].transcript;document.getElementById('heard').textContent='Heard: '+q;document.getElementById('askText').value=q;respond(q)};rec.onerror=()=>document.getElementById('heard').textContent='Could not hear that. Try again or type instead.';rec.start()};
+document.getElementById('clearData').onclick=()=>{if(confirm('Clear all LOUIE notes, events and demo messages?')){['notes','events','messages'].forEach(k=>{localStorage.removeItem('louie_'+k);render(k,{notes:'noteList',events:'eventList',messages:'msgList'}[k],'Nothing here yet.')})}};
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
