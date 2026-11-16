@@ -72,8 +72,7 @@ document.getElementById('listen').onclick=()=>{const SR=window.SpeechRecognition
 document.getElementById('clearData').onclick=()=>{if(confirm('Clear all LOUIE notes, events and demo messages?')){['notes','events','messages'].forEach(k=>{localStorage.removeItem('louie_'+k);render(k,{notes:'noteList',events:'eventList',messages:'msgList'}[k],'Nothing here yet.')})}};
 if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
-</body>
-
+ 
 <script type="module">
   import { initializeApp }
     from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -174,4 +173,8 @@ if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator
   });
 
   console.log("LOUIE ID ready");
+</body>
+
 </script>
+</body>
+</html>
