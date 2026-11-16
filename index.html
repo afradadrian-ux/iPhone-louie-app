@@ -73,12 +73,19 @@ document.getElementById('clearData').onclick=()=>{if(confirm('Clear all LOUIE no
 if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>
+
 <script type="module">
   import { initializeApp }
     from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-  import { getAuth }
-    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD1SLTfcFFey94Qksu8qnfNyQiOe5U0x54",
@@ -90,7 +97,81 @@ if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  window.louieAuth = auth;
-  console.log("LOUIE Firebase connected!");
+  const panel = document.createElement("section");
+  panel.style.cssText = `
+    position:relative; z-index:9999;
+    max-width:420px; margin:20px auto;
+    padding:22px; border-radius:18px;
+    background:#102536; color:white;
+    font-family:Arial,sans-serif;
+  `;
+
+  panel.innerHTML = `
+    <h2>LOUIE ID</h2>
+    <p id="louie-status">Not signed in</p>
+    <input id="louie-email" type="email"
+      placeholder="Email address"
+      autocomplete="email"
+      style="box-sizing:border-box;width:100%;padding:13px;margin:6px 0">
+    <input id="louie-password" type="password"
+      placeholder="Password"
+      autocomplete="current-password"
+      style="box-sizing:border-box;width:100%;padding:13px;margin:6px 0">
+    <button id="louie-create">Create account</button>
+    <button id="louie-login">Sign in</button>
+    <button id="louie-reset">Forgot password?</button>
+    <button id="louie-logout">Sign out</button>
+    <p id="louie-message" role="status"></p>
+  `;
+
+  document.body.appendChild(panel);
+
+  const email = panel.querySelector("#louie-email");
+  const password = panel.querySelector("#louie-password");
+  const message = panel.querySelector("#louie-message");
+  const status = panel.querySelector("#louie-status");
+
+  panel.querySelector("#louie-create").onclick = async () => {
+    try {
+      await createUserWithEmailAndPassword(
+        auth, email.value.trim(), password.value
+      );
+      message.textContent = "LOUIE account created!";
+    } catch (error) {
+      message.textContent = error.message;
+    }
+  };
+
+  panel.querySelector("#louie-login").onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(
+        auth, email.value.trim(), password.value
+      );
+      message.textContent = "Welcome to LOUIE!";
+    } catch (error) {
+      message.textContent = error.message;
+    }
+  };
+
+  panel.querySelector("#louie-reset").onclick = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email.value.trim());
+      message.textContent = "Check your email for a reset link.";
+    } catch (error) {
+      message.textContent = error.message;
+    }
+  };
+
+  panel.querySelector("#louie-logout").onclick = async () => {
+    await signOut(auth);
+    message.textContent = "Signed out.";
+  };
+
+  onAuthStateChanged(auth, user => {
+    status.textContent = user
+      ? "Signed in: " + user.email
+      : "Not signed in";
+  });
+
+  console.log("LOUIE ID ready");
 </script>
-</html>
