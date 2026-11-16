@@ -72,4 +72,25 @@ document.getElementById('listen').onclick=()=>{const SR=window.SpeechRecognition
 document.getElementById('clearData').onclick=()=>{if(confirm('Clear all LOUIE notes, events and demo messages?')){['notes','events','messages'].forEach(k=>{localStorage.removeItem('louie_'+k);render(k,{notes:'noteList',events:'eventList',messages:'msgList'}[k],'Nothing here yet.')})}};
 if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
-</body></html>
+</body>
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+  import { getAuth }
+    from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD1SLTfcFFey94Qksu8qnfNyQiOe5U0x54",
+    authDomain: "louie-2a185.firebaseapp.com",
+    projectId: "louie-2a185",
+    appId: "1:241179905513:web:11da3f8fec402dad258f78"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.louieAuth = auth;
+  console.log("LOUIE Firebase connected!");
+</script>
+</html>
