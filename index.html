@@ -173,8 +173,63 @@ if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator
   });
 
   console.log("LOUIE ID ready");
-</body>
+ 
+</script type="module">
+<script type="module">
+const panel = document.createElement("section");
+panel.style.cssText = "background:#102536;color:white;padding:20px;margin:20px;border-radius:18px;font-family:Arial";
+panel.innerHTML = `
+<h2>LOUIE ID</h2>
+<p id="louie-status">Connecting...</p>
+<input id="louie-email" type="email" placeholder="Email address">
+<input id="louie-password" type="password" placeholder="Password">
+<button id="louie-create">Create account</button>
+<button id="louie-login">Sign in</button>
+<p id="louie-message"></p>
+`;
+document.body.appendChild(panel);
 
+const message = panel.querySelector("#louie-message");
+
+try {
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
+  const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } =
+    await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD1SLTfcFFey94Qksu8qnfNyQiOe5U0x54",
+    authDomain: "louie-2a185.firebaseapp.com",
+    projectId: "louie-2a185",
+    appId: "1:241179905513:web:11da3f8fec402dad258f78"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  panel.querySelector("#louie-create").onclick = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, panel.querySelector("#louie-email").value.trim(), panel.querySelector("#louie-password").value);
+      message.textContent = "Account created!";
+    } catch (e) { message.textContent = e.message; }
+  };
+
+  panel.querySelector("#louie-login").onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, panel.querySelector("#louie-email").value.trim(), panel.querySelector("#louie-password").value);
+      message.textContent = "Welcome to LOUIE!";
+    } catch (e) { message.textContent = e.message; }
+  };
+
+  onAuthStateChanged(auth, user => {
+    panel.querySelector("#louie-status").textContent = user ? "Signed in" : "Not signed in";
+  });
+} catch (e) {
+  message.textContent = "LOUIE connection error: " + e.message;
+  panel.querySelector("#louie-status").textContent = "Connection failed";
+}
 </script>
+</script>
+ 
 </body>
 </html>
+
